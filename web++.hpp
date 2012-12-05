@@ -1,13 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdarg.h>
 #include <dirent.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/stat.h>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 #define SERVER_NAME "Web++"
 #define SERVER_VERSION "1.0.1"
@@ -27,6 +24,7 @@ namespace WPP {
             std::string params;
             map<string, string> headers;
             map<string, string> query;
+            map<string, string> cookies;
 
         private:
 
@@ -232,7 +230,7 @@ namespace WPP {
             out << "<title>" << new_path << "</title>" << endl;
             out << "<table>";
 
-            while(dir = readdir(dir_d)) {
+            while((dir = readdir(dir_d))) {
                 out << "<tr><td><a href=\"" << req->path << "?open=" << new_path << "/" << dir->d_name << """\">";
 
                 if (dir->d_type == isFolder) {
@@ -272,15 +270,15 @@ namespace WPP {
             bool start();
         private:
             void* main_loop(void*);
-            bool parse_headers(char*, Request*, Response*);
+            void parse_headers(char*, Request*, Response*);
             bool match_route(Request*, Response*);
             string trim(string);
             void split(string, string, int, vector<string>*);
     };
 
     void Server::split(string str, string separator, int max, vector<string>* results){
-        int found, i = 0;
-        found = str.find_first_of(separator);
+        int i = 0;
+        size_t found = str.find_first_of(separator);
 
         while(found != string::npos){
             if(found > 0){
@@ -304,7 +302,7 @@ namespace WPP {
         return s;
     }
 
-    bool Server::parse_headers(char* headers, Request* req, Response* res) {
+    void Server::parse_headers(char* headers, Request* req, Response* res) {
         // Parse request headers
         int i = 0;
         char * pch;
@@ -324,8 +322,9 @@ namespace WPP {
                 req->method = R[0];
                 req->path = R[1];
 
-                int pos = req->path.find('?');
-
+                size_t pos = req->path.find('?');
+                
+                // We have GET params here
                 if(pos != string::npos)  {
                     vector<string> Q1;
                     this->split(req->path.substr(pos + 1), "&", -1, &Q1);
@@ -348,6 +347,19 @@ namespace WPP {
 
                 if(R.size() == 2) {
                     req->headers[R[0]] = R[1];
+                    
+                    // Yeah, cookies!
+                    if(R[0] == "Cookie") {
+                        vector<string> C1;
+                        this->split(R[1], "; ", -1, &C1);
+                        
+                        for(int c = 0; c < C1.size(); c++) {
+                            vector<string> C2;
+                            this->split(C1[c], "=", 2, &C2);
+                            
+                            req->cookies[C2[0]] = C2[1];
+                        }
+                    }
                 }
             }
         }
@@ -419,9 +431,7 @@ namespace WPP {
     bool Server::match_route(Request* req, Response* res) {
         for (int i = 0; i < ROUTES.size(); i++) {
             if(ROUTES[i].path == req->path && (ROUTES[i].method == req->method || ROUTES[i].method == "ALL")) {
-//                if(ROUTES[i].params != NULL) {
-                    req->params = ROUTES[i].params;
-//                }
+                req->params = ROUTES[i].params;
 
                 ROUTES[i].callback(req, res);
 
@@ -433,16 +443,14 @@ namespace WPP {
     }
 
     void* Server::main_loop(void* arg) {
-        int port = 5000;
-        string host;
-        int* context = reinterpret_cast<int*>(arg);
+        int* port = reinterpret_cast<int*>(arg);
 
         int newsc;
 
         int sc = socket(AF_INET, SOCK_STREAM, 0);
 
         if (sc < 0) {
-            throw WPP::Exception(); // "ERROR opening socket"
+            throw WPP::Exception("ERROR opening socket");
 
             return false;
         }
@@ -450,15 +458,13 @@ namespace WPP {
         struct sockaddr_in serv_addr, cli_addr;
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_addr.s_addr = INADDR_ANY;
-        serv_addr.sin_port = htons(port);
+        serv_addr.sin_port = htons(*port);
 
         if (bind(sc, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
             throw WPP::Exception("ERROR on binding");
 
             return false;
         }
-
-        //    printf("HTTP listening on %s:%d", host, port);
 
         listen(sc, 5);
 
@@ -479,10 +485,12 @@ namespace WPP {
             Response res;
 
             static char headers[BUFSIZE + 1];
-            long ret = read(newsc, headers, BUFSIZE); 	// read Web request in one go
-            if(ret > 0 && ret < BUFSIZE)			// return code is valid chars
-                headers[ret] = 0;				// terminate the buffer
-            else headers[0] = 0;
+            long ret = read(newsc, headers, BUFSIZE);
+            if(ret > 0 && ret < BUFSIZE) {
+                headers[ret] = 0;
+            } else {
+                headers[0] = 0;
+            }
 
             this->parse_headers(headers, &req, &res);
 
@@ -494,7 +502,7 @@ namespace WPP {
 
             char header_buffer[BUFSIZE];
             const char* body = res.body.str().c_str();
-            int body_len = strlen(body);
+            size_t body_len = strlen(body);
 
             // build http response
             sprintf(header_buffer, "HTTP/1.0 %d\r\n", res.code);
@@ -502,13 +510,14 @@ namespace WPP {
             // append headers
             sprintf(&header_buffer[strlen(header_buffer)], "Server: %s %s\r\n", SERVER_NAME, SERVER_VERSION);
             sprintf(&header_buffer[strlen(header_buffer)], "Content-Type: %s\r\n", res.type.c_str());
-            sprintf(&header_buffer[strlen(header_buffer)], "Content-Length: %d\r\n", body_len);
+            sprintf(&header_buffer[strlen(header_buffer)], "Content-Length: %zd\r\n", body_len);
 
             // append extra crlf to indicate start of body
             strcat(header_buffer, "\r\n");
 
-            write(newsc, header_buffer, strlen(header_buffer));
-            write(newsc, body, body_len);
+            ssize_t t;
+            t = write(newsc, header_buffer, strlen(header_buffer));
+            t = write(newsc, body, body_len);
         }
     }
 
@@ -520,7 +529,7 @@ namespace WPP {
 //              assert (rc == 0);
 //         }
 
-        this->main_loop(NULL);
+        this->main_loop(&port);
 
         return true;
     }

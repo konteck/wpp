@@ -1,7 +1,7 @@
 CPP = g++
-SRC = simple_run.cpp
-OUT = web
-CPPFLAGS = # -O2 -Wall
+SRC = demo.cpp
+OUT = demo
+CPPFLAGS =
 LDFLAGS =
 
 all: build run
