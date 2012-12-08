@@ -1,88 +1,91 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Web++ : Single file embedded C++ web server" />
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Web++ by konteck</title>
+    <title>Web++</title>
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Web++</h1>
-        <h2>Single file embed C++ web server</h2>
-        <a href="https://github.com/konteck/wpp" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>Web++</h1>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/konteck/wpp">View on GitHub</a>
 
-<p><em>Single file embed C++ web server</em></p>
+          <h1 id="project_title">Web++</h1>
+          <h2 id="project_tagline">Single file embedded C++ web server</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/konteck/wpp/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/konteck/wpp/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><img src="https://raw.github.com/konteck/wpp/master/logo.png" alt="Web++"></p>
+
+<p><em>Single file embedded C++ web server</em></p>
 
 <h1></h1>
 
 <h2>How to use in own project</h2>
 
-<pre><code>#include &lt;iostream&gt;
-#include &lt;map&gt;
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;map&gt;</span>
 
-#include "web++.hpp"
+<span class="cp">#include "web++.hpp"</span>
 
-using namespace WPP;
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">WPP</span><span class="p">;</span>
 
-void web(Request* req, Response* res) {
-    std::cout &lt;&lt; req-&gt;method &lt;&lt; " " &lt;&lt; req-&gt;path &lt;&lt; std::endl;
+<span class="kt">void</span> <span class="n">web</span><span class="p">(</span><span class="n">Request</span><span class="o">*</span> <span class="n">req</span><span class="p">,</span> <span class="n">Response</span><span class="o">*</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">method</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-    std::cout &lt;&lt; "Headers:" &lt;&lt; std::endl;
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Headers:"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-    std::map&lt;std::string, std::string&gt;::iterator iter;
-    for (iter = req-&gt;headers.begin(); iter != req-&gt;headers.end(); ++iter) {
-        std::cout &lt;&lt; iter-&gt;first &lt;&lt; " = " &lt;&lt; iter-&gt;second &lt;&lt; std::endl;
-    }
+    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">iter</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">iter</span> <span class="o">=</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">headers</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">headers</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">iter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">" = "</span> <span class="o">&lt;&lt;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    std::cout &lt;&lt; "Query:" &lt;&lt; std::endl;
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Query:"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-    for (iter = req-&gt;query.begin(); iter != req-&gt;query.end(); ++iter) {
-        std::cout &lt;&lt; iter-&gt;first &lt;&lt; " = " &lt;&lt; iter-&gt;second &lt;&lt; std::endl;
-    }
+    <span class="k">for</span> <span class="p">(</span><span class="n">iter</span> <span class="o">=</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">query</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">query</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">iter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">" = "</span> <span class="o">&lt;&lt;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    std::cout &lt;&lt; "Cookies: " &lt;&lt; req-&gt;cookies.size() &lt;&lt; std::endl;
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Cookies: "</span> <span class="o">&lt;&lt;</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">cookies</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-    for (iter = req-&gt;cookies.begin(); iter != req-&gt;cookies.end(); ++iter) {
-        std::cout &lt;&lt; iter-&gt;first &lt;&lt; " = " &lt;&lt; iter-&gt;second &lt;&lt; std::endl;
-    }
+    <span class="k">for</span> <span class="p">(</span><span class="n">iter</span> <span class="o">=</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">cookies</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">req</span><span class="o">-&gt;</span><span class="n">cookies</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">iter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">" = "</span> <span class="o">&lt;&lt;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    res-&gt;body &lt;&lt; "HELLO";
-}
+    <span class="n">res</span><span class="o">-&gt;</span><span class="n">body</span> <span class="o">&lt;&lt;</span> <span class="s">"HELLO"</span><span class="p">;</span>
+<span class="p">}</span>
 
-int main(int argc, const char* argv[]) {
-    try {
-        std::cout &lt;&lt; "Listening on port 5000" &lt;&lt; std::endl;
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Listening on port 5000"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-        WPP::Server server;
-        server.get("/", &amp;web);
-        server.all("/dir", "./");
-        server.start(5000);
-    } catch(WPP::Exception e) {
-        std::cerr &lt;&lt; "WebServer: " &lt;&lt; e.what() &lt;&lt; std::endl;
-    }
+        <span class="n">WPP</span><span class="o">::</span><span class="n">Server</span> <span class="n">server</span><span class="p">;</span>
+        <span class="n">server</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">web</span><span class="p">);</span>
+        <span class="n">server</span><span class="p">.</span><span class="n">all</span><span class="p">(</span><span class="s">"/dir"</span><span class="p">,</span> <span class="s">"./"</span><span class="p">);</span>
+        <span class="n">server</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">WPP</span><span class="o">::</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"WebServer: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    return EXIT_SUCCESS;
-}
-</code></pre>
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
 
 <h2>How to compile</h2>
 
@@ -107,25 +110,28 @@ int main(int argc, const char* argv[]) {
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 
 <p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/konteck/wpp/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/konteck/wpp/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/konteck/wpp"></a> is maintained by <a href="https://github.com/konteck">konteck</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
     </div>
 
-  
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Web++ maintained by <a href="https://github.com/konteck">konteck</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-36920224-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
   </body>
 </html>
