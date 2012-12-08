@@ -334,7 +334,7 @@ namespace WPP {
                     vector<string> Q1;
                     this->split(req->path.substr(pos + 1), "&", -1, &Q1);
 
-                    for(int q = 0; q < Q1.size(); q++) {
+                    for(vector<string>::size_type q = 0; q < Q1.size(); q++) {
                         vector<string> Q2;
                         this->split(Q1[q], "=", -1, &Q2);
 
@@ -358,7 +358,7 @@ namespace WPP {
                         vector<string> C1;
                         this->split(R[1], "; ", -1, &C1);
                         
-                        for(int c = 0; c < C1.size(); c++) {
+                        for(vector<string>::size_type c = 0; c < C1.size(); c++) {
                             vector<string> C2;
                             this->split(C1[c], "=", 2, &C2);
                             
@@ -434,7 +434,7 @@ namespace WPP {
     }
 
     bool Server::match_route(Request* req, Response* res) {
-        for (int i = 0; i < ROUTES.size(); i++) {
+        for (vector<Route>::size_type i = 0; i < ROUTES.size(); i++) {
             if(ROUTES[i].path == req->path && (ROUTES[i].method == req->method || ROUTES[i].method == "ALL")) {
                 req->params = ROUTES[i].params;
 
