@@ -4,7 +4,7 @@ OUT = demo
 CPPFLAGS =
 LDFLAGS =
 
-all: build run
+all: build
 
 build: $(SRC)
 	@echo Compiling $(basename $<)...
