@@ -456,8 +456,6 @@ namespace WPP {
 
         if (sc < 0) {
             throw WPP::Exception("ERROR opening socket");
-
-            return false;
         }
 
         struct sockaddr_in serv_addr, cli_addr;
@@ -467,8 +465,6 @@ namespace WPP {
 
         if (bind(sc, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
             throw WPP::Exception("ERROR on binding");
-
-            return false;
         }
 
         listen(sc, 5);
@@ -481,8 +477,6 @@ namespace WPP {
 
             if (newsc < 0) {
                 throw WPP::Exception("ERROR on accept");
-
-                break;
             }
 
             // handle new connection
