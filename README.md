@@ -1,7 +1,7 @@
 ![Web++](https://raw.github.com/konteck/wpp/master/logo.png)
 [![Build Status](https://secure.travis-ci.org/konteck/wpp.png)](http://travis-ci.org/konteck/wpp)
 
-*Single file embedded C++ web server*
+*Single file embedded C++ web server* 
 
 ===
 
