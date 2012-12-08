@@ -1,2 +1,2 @@
 language: cpp
-script: make
+script: make build
