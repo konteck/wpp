@@ -1,6 +1,11 @@
 #include <dirent.h>
 #include <netinet/in.h>
 #include <sys/stat.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <algorithm>
 #include <map>
 #include <vector>
 #include <fstream>
