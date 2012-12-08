@@ -1,6 +1,11 @@
 #include <dirent.h>
 #include <netinet/in.h>
 #include <sys/stat.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <algorithm>
 #include <map>
 #include <vector>
 #include <fstream>
@@ -329,7 +334,7 @@ namespace WPP {
                     vector<string> Q1;
                     this->split(req->path.substr(pos + 1), "&", -1, &Q1);
 
-                    for(int q = 0; q < Q1.size(); q++) {
+                    for(vector<string>::size_type q = 0; q < Q1.size(); q++) {
                         vector<string> Q2;
                         this->split(Q1[q], "=", -1, &Q2);
 
@@ -353,7 +358,7 @@ namespace WPP {
                         vector<string> C1;
                         this->split(R[1], "; ", -1, &C1);
                         
-                        for(int c = 0; c < C1.size(); c++) {
+                        for(vector<string>::size_type c = 0; c < C1.size(); c++) {
                             vector<string> C2;
                             this->split(C1[c], "=", 2, &C2);
                             
@@ -429,7 +434,7 @@ namespace WPP {
     }
 
     bool Server::match_route(Request* req, Response* res) {
-        for (int i = 0; i < ROUTES.size(); i++) {
+        for (vector<Route>::size_type i = 0; i < ROUTES.size(); i++) {
             if(ROUTES[i].path == req->path && (ROUTES[i].method == req->method || ROUTES[i].method == "ALL")) {
                 req->params = ROUTES[i].params;
 
@@ -451,8 +456,6 @@ namespace WPP {
 
         if (sc < 0) {
             throw WPP::Exception("ERROR opening socket");
-
-            return false;
         }
 
         struct sockaddr_in serv_addr, cli_addr;
@@ -462,8 +465,6 @@ namespace WPP {
 
         if (bind(sc, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
             throw WPP::Exception("ERROR on binding");
-
-            return false;
         }
 
         listen(sc, 5);
@@ -476,8 +477,6 @@ namespace WPP {
 
             if (newsc < 0) {
                 throw WPP::Exception("ERROR on accept");
-
-                break;
             }
 
             // handle new connection
