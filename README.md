@@ -1,6 +1,6 @@
-# Web++
+![Web++](http://icecdn.com/1644924957.png)
 
-*Single file embed C++ web server*
+*Single file embedded C++ web server*
 
 ===
 
