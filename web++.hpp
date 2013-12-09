@@ -463,7 +463,7 @@ namespace WPP {
         serv_addr.sin_addr.s_addr = INADDR_ANY;
         serv_addr.sin_port = htons(*port);
 
-        if (bind(sc, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+        if (::bind(sc, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) != 0) {
             throw WPP::Exception("ERROR on binding");
         }
 
