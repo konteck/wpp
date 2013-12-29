@@ -201,6 +201,7 @@ namespace WPP {
 //        cout << base_path << " " << actual_path << endl;
 
         if(strncmp(base_path, actual_path, strlen(base_path)) > 0) {
+            free(actual_path);
             actual_path = base_path;
         }
 
@@ -251,6 +252,11 @@ namespace WPP {
 
             res->send(out.str().c_str());
         }
+        
+        if (actual_path != base_path) {
+            free(actual_path);
+        }
+        free(base_path);
     }
 
     struct Route {
