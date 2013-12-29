@@ -196,14 +196,14 @@ namespace WPP {
             strcat(actual_path, new_path.c_str());
         }
 
-//        actual_path = realpath(actual_path, NULL);
-
-//        cout << base_path << " " << actual_path << endl;
-
-        if(strncmp(base_path, actual_path, strlen(base_path)) > 0) {
+        // prevent directory traversal
+        char * effective_path = realpath(actual_path, NULL);
+        if (strncmp(base_path, effective_path, strlen(base_path)) != 0) {
             free(actual_path);
             actual_path = base_path;
         }
+        free(effective_path);
+        effective_path = NULL;
 
         status = stat(actual_path, &st_buf);
 
