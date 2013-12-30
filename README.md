@@ -1,5 +1,5 @@
 ![Web++](https://raw.github.com/konteck/wpp/master/logo.png)
-[![Build Status](https://secure.travis-ci.org/konteck/wpp.png)](http://travis-ci.org/konteck/wpp)
+[![Build Status](https://secure.travis-ci.org/mmaraya/wpp.png)](http://travis-ci.org/mmaraya/wpp)
 
 *Single file embedded C++ web server* 
 
