@@ -197,10 +197,11 @@ namespace WPP {
         }
 
         // prevent directory traversal
-        char * effective_path = realpath(actual_path, NULL);
-        if (strncmp(base_path, effective_path, strlen(base_path)) != 0) {
+        char* effective_path = realpath(actual_path, NULL);
+        if ((effective_path != NULL) && (strncmp(base_path, effective_path, strlen(base_path)) != 0)) {
             free(actual_path);
             actual_path = base_path;
+            new_path = "";
         }
         free(effective_path);
         effective_path = NULL;
