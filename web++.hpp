@@ -39,12 +39,23 @@ namespace WPP {
         public:
             Response() {
                 code = 200;
+                phrase = "OK";
                 type = "text/html";
                 body << "";
+                
+                // set current date and time for "Date: " header
+                char buffer[100];
+                time_t now = time(0);
+                struct tm tstruct = *gmtime(&now);
+                strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S %Z", &tstruct);
+                date = buffer;
             }
             int code;
+            string phrase;
             string type;
+            string date;
             stringstream body;
+        
             void send(string str) {
                body << str;
             };
@@ -210,6 +221,7 @@ namespace WPP {
 
         if (status != 0)  {
             res->code = 404;
+            res->phrase = "Not Found";
             res->type = "text/plain";
             res->send("Not found");
         } else if (S_ISREG (st_buf.st_mode)) {
@@ -502,6 +514,7 @@ namespace WPP {
 
             if(!this->match_route(&req, &res)) {
                 res.code = 404;
+                res.phrase = "Not Found";
                 res.type = "text/plain";
                 res.send("Not found");
             }
@@ -511,10 +524,11 @@ namespace WPP {
             size_t body_len = strlen(body);
 
             // build http response
-            sprintf(header_buffer, "HTTP/1.0 %d\r\n", res.code);
+            sprintf(header_buffer, "HTTP/1.0 %d %s\r\n", res.code, res.phrase.c_str());
 
             // append headers
             sprintf(&header_buffer[strlen(header_buffer)], "Server: %s %s\r\n", SERVER_NAME, SERVER_VERSION);
+            sprintf(&header_buffer[strlen(header_buffer)], "Date: %s\r\n", res.date.c_str());
             sprintf(&header_buffer[strlen(header_buffer)], "Content-Type: %s\r\n", res.type.c_str());
             sprintf(&header_buffer[strlen(header_buffer)], "Content-Length: %zd\r\n", body_len);
 
