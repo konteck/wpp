@@ -520,8 +520,8 @@ namespace WPP {
             }
 
             char header_buffer[BUFSIZE];
-            const char* body = res.body.str().c_str();
-            size_t body_len = strlen(body);
+            string body = res.body.str();
+            size_t body_len = strlen(body.c_str());
 
             // build http response
             sprintf(header_buffer, "HTTP/1.0 %d %s\r\n", res.code, res.phrase.c_str());
@@ -537,7 +537,7 @@ namespace WPP {
 
             ssize_t t;
             t = write(newsc, header_buffer, strlen(header_buffer));
-            t = write(newsc, body, body_len);
+            t = write(newsc, body.c_str(), body_len);
         }
     }
 
