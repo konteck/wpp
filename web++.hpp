@@ -521,7 +521,7 @@ namespace WPP {
 
             char header_buffer[BUFSIZE];
             string body = res.body.str();
-            size_t body_len = strlen(body.c_str());
+            size_t body_len = body.size();
 
             // build http response
             sprintf(header_buffer, "HTTP/1.0 %d %s\r\n", res.code, res.phrase.c_str());
