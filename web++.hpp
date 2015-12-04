@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <regex>
 
 #define SERVER_NAME "Web++"
 #define SERVER_VERSION "1.0.1"
@@ -454,7 +455,8 @@ namespace WPP {
 
     bool Server::match_route(Request* req, Response* res) {
         for (vector<Route>::size_type i = 0; i < ROUTES.size(); i++) {
-            if(ROUTES[i].path == req->path && (ROUTES[i].method == req->method || ROUTES[i].method == "ALL")) {
+	    std::regex pattern (ROUTES[i].path);
+            if( regex_match(req->path, pattern) || ROUTES[i].path == req->path && (ROUTES[i].method == req->method || ROUTES[i].method == "ALL")) {
                 req->params = ROUTES[i].params;
 
                 ROUTES[i].callback(req, res);
