@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <functional>
 
 #define SERVER_NAME "Web++"
 #define SERVER_VERSION "1.0.1"
@@ -64,6 +65,8 @@ namespace WPP {
             };
         private:
     };
+
+    using callbackType = function<void(Request*, Response*)>;
 
     class Exception : public std::exception {
         public:
@@ -275,7 +278,7 @@ namespace WPP {
     struct Route {
         string path;
         string method;
-        void (*callback)(Request*, Response*);
+        callbackType callback;
         string params;
     };
 
@@ -283,9 +286,9 @@ namespace WPP {
 
     class Server {
         public:
-            void get(string, void (*callback)(Request*, Response*));
-            void post(string, void (*callback)(Request*, Response*));
-            void all(string, void (*callback)(Request*, Response*));
+            void get(string, callbackType);
+            void post(string, callbackType);
+            void all(string, callbackType);
             void get(string, string);
             void post(string, string);
             void all(string, string);
@@ -389,7 +392,7 @@ namespace WPP {
         }
     }
 
-    void Server::get(string path, void (*callback)(Request*, Response*)) {
+    void Server::get(string path, callbackType callback) {
         Route r = {
              path,
              "GET",
@@ -399,7 +402,7 @@ namespace WPP {
         ROUTES.push_back(r);
     }
 
-    void Server::post(string path, void (*callback)(Request*, Response*)) {
+    void Server::post(string path, callbackType callback) {
         Route r = {
              path,
              "POST",
@@ -409,7 +412,7 @@ namespace WPP {
         ROUTES.push_back(r);
     }
 
-    void Server::all(string path, void (*callback)(Request*, Response*)) {
+    void Server::all(string path, callbackType callback) {
         Route r = {
              path,
              "ALL",
