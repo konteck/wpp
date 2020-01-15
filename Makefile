@@ -1,7 +1,7 @@
 CPP = g++
 SRC = demo.cpp
 OUT = demo
-CPPFLAGS =
+CPPFLAGS = -std=c++11
 LDFLAGS =
 
 all: build
